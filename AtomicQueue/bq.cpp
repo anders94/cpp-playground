@@ -25,7 +25,6 @@ void worker_thread() {
     // Wait until main() sends data
     std::unique_lock lk(m);
     cv.wait(lk, [&]{
-      std::cout << "waiting\n";
       return ready;
     });
 
@@ -39,6 +38,9 @@ void worker_thread() {
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
       print(q);
+    }
+    else { // if the queue is empty, stop
+      ready = false;
     }
 
     // Send data back to main()
