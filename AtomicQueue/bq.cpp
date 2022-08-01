@@ -24,7 +24,7 @@ void worker_thread() {
   while (1) {
     // Wait until main() sends data
     std::unique_lock lk(m);
-    cv.wait(lk, []{
+    cv.wait(lk, [&]{
       std::cout << "waiting\n";
       return ready;
     });
@@ -70,7 +70,7 @@ int main() {
   // wait for the worker
   {
     std::unique_lock lg(m);
-    cv.wait(lg, [] {
+    cv.wait(lg, [&] {
       return processed;
     });
   }
@@ -93,7 +93,7 @@ int main() {
   // wait for the worker
   {
     std::unique_lock lg(m);
-    cv.wait(lg, [] {
+    cv.wait(lg, [&] {
       return processed;
     });
   }
